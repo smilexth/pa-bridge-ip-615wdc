@@ -1,0 +1,9 @@
+# vendor SDK: BUENA's binaries, not ours to redistribute.
+# Run ./scripts/fetch-sdk.sh to populate this from the vendor's own download page.
+# fetch from the vendor's *IP-Series System SDK Package* archive
+vendor/
+
+# build output
+src/pa-bridge
+*.o
+.DS_Store

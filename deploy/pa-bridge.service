@@ -1,0 +1,27 @@
+[Unit]
+Description=AudioSocket bridge to BUENA IP- series PA speakers
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Speaker amplifier level applied on every terminal connect, 0..100 scaled to the
+# hardware's 10 steps. Survives speaker reboots and service restarts.
+Environment=PA_BRIDGE_VOLUME=60
+# Optional argument: the AudioSocket port (default 9092). Terminals are learned
+# from the SDK's own connect events, so nothing else needs configuring here.
+ExecStart=/usr/local/bin/pa-bridge
+Restart=always
+RestartSec=5
+
+# Needs the LAN: the SDK listens for terminal registrations, and the bridge itself
+# accepts 29783 (the port the firmware dials). No privileged ports are used.
+DynamicUser=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_INET AF_UNIX
+
+[Install]
+WantedBy=multi-user.target

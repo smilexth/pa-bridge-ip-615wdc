@@ -1,0 +1,11 @@
+#!/bin/sh
+# Talk to pa-bridge.service on its loopback control port.
+#   pa-volume            show terminal count and current volume
+#   pa-volume 0..100     set the speaker amplifier level
+#   pa-volume get        ask the speaker what it is actually set to (answer lands in the log)
+case "$1" in
+  "")            printf "status\n" | timeout 3 nc 127.0.0.1 9093 ;;
+  get|status)    printf "%s\n" "$1" | timeout 3 nc 127.0.0.1 9093 ;;
+  *[!0-9]*)      echo "usage: pa-volume [0-100|get|status]" >&2; exit 2 ;;
+  *)             printf "vol %s\n" "$1" | timeout 3 nc 127.0.0.1 9093 ;;
+esac
